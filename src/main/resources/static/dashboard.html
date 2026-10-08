@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Hostel Management System</title>
+    <meta name="description" content="Centralized hostel administration dashboard and overview statistics">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-container">
+    <!-- DARK SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+            <div>
+                <h2>Hostel Admin</h2>
+                <p>Management Portal</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-title">Navigation</div>
+            <a href="dashboard.html" class="nav-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="students.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Students</span>
+            </a>
+            <a href="rooms.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3h18v18H3zM3 9h18M9 21V9"></path></svg>
+                <span>Rooms</span>
+            </a>
+            <a href="allocations.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14l2 2 4-4"></path></svg>
+                <span>Room Allocation</span>
+            </a>
+            <a href="complaints.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span>Complaints</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-badge-footer">
+                <div class="admin-avatar js-admin-avatar">AD</div>
+                <div class="admin-info">
+                    <div class="admin-name js-admin-name">Hostel Warden</div>
+                    <div class="admin-role">Administrator</div>
+                </div>
+                <button class="btn-logout" title="Sign Out" onclick="HMS.logout()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN BODY -->
+    <main class="main-wrapper">
+        <header class="top-header">
+            <div class="header-left">
+                <button class="btn-menu-toggle" aria-label="Toggle menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="page-title-group">
+                    <h1>Administrative Dashboard</h1>
+                    <p>Live occupancy metrics, bed availability and service requests</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="quick-meta-pill">
+                    <span class="status-dot-pulse"></span>
+                    <span>System Active &bull; Spring Boot + JDBC</span>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="loadDashboardData()">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    <span>Refresh</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="content-body">
+            <!-- 6 METRIC CARDS (Specification 6) -->
+            <div class="metrics-grid">
+                <!-- Students Card -->
+                <div class="metric-card card-blue" onclick="window.location.href='students.html'">
+                    <div class="metric-info">
+                        <h3>Total Students</h3>
+                        <div class="metric-value" id="statStudents">-</div>
+                        <div class="metric-sub">Registered residents</div>
+                    </div>
+                    <div class="metric-icon-box icon-blue">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Rooms Card -->
+                <div class="metric-card card-blue" onclick="window.location.href='rooms.html'">
+                    <div class="metric-info">
+                        <h3>Total Rooms</h3>
+                        <div class="metric-value" id="statRooms">-</div>
+                        <div class="metric-sub">Across all blocks</div>
+                    </div>
+                    <div class="metric-icon-box icon-cyan">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3h18v18H3zM3 9h18M9 21V9"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Occupied Beds Card -->
+                <div class="metric-card card-amber" onclick="window.location.href='allocations.html'">
+                    <div class="metric-info">
+                        <h3>Occupied Beds</h3>
+                        <div class="metric-value" id="statOccupied">-</div>
+                        <div class="metric-sub" id="statCapacitySub">Capacity: - beds</div>
+                    </div>
+                    <div class="metric-icon-box icon-amber">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Available Beds Card -->
+                <div class="metric-card card-green" onclick="window.location.href='allocations.html'">
+                    <div class="metric-info">
+                        <h3>Available Beds</h3>
+                        <div class="metric-value" id="statAvailable">-</div>
+                        <div class="metric-sub">Ready for allocation</div>
+                    </div>
+                    <div class="metric-icon-box icon-green">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Pending Complaints Card -->
+                <div class="metric-card card-red" onclick="window.location.href='complaints.html'">
+                    <div class="metric-info">
+                        <h3>Pending Issues</h3>
+                        <div class="metric-value" id="statPending">-</div>
+                        <div class="metric-sub" id="statResolvedSub">- resolved</div>
+                    </div>
+                    <div class="metric-icon-box icon-red">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Occupancy Rate Card -->
+                <div class="metric-card card-blue" onclick="window.location.href='rooms.html'">
+                    <div class="metric-info">
+                        <h3>Occupancy Rate</h3>
+                        <div class="metric-value" id="statRate">-%</div>
+                        <div class="metric-sub">Total hostel density</div>
+                    </div>
+                    <div class="metric-icon-box icon-blue">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 20V10M12 20V4M6 20v-6"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TWO COLUMN TABLES: RECENT ALLOCATIONS & RECENT COMPLAINTS -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: 24px;">
+                <!-- Recent Allocations Panel -->
+                <div class="content-panel">
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <h3>Recent Room Allocations</h3>
+                            <p>Latest student bed assignments</p>
+                        </div>
+                        <a href="allocations.html" class="btn btn-secondary btn-sm">View All</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Room & Bed</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentAllocationsTableBody">
+                                <tr><td colspan="4" style="text-align:center; padding: 24px; color: var(--text-muted);">Loading allocations...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recent Complaints Panel -->
+                <div class="content-panel">
+                    <div class="panel-header">
+                        <div class="panel-title-group">
+                            <h3>Recent Complaints & Requests</h3>
+                            <p>Latest maintenance reports from students</p>
+                        </div>
+                        <a href="complaints.html" class="btn btn-secondary btn-sm">View Queue</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Student & Room</th>
+                                    <th>Category</th>
+                                    <th>Issue</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentComplaintsTableBody">
+                                <tr><td colspan="4" style="text-align:center; padding: 24px; color: var(--text-muted);">Loading complaints...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+    async function loadDashboardData() {
+        try {
+            const stats = await HMS.api('/api/dashboard/stats');
+            
+            document.getElementById('statStudents').textContent = stats.totalStudents;
+            document.getElementById('statRooms').textContent = stats.totalRooms;
+            document.getElementById('statOccupied').textContent = stats.totalOccupied;
+            document.getElementById('statCapacitySub').textContent = `Capacity: ${stats.totalCapacity} beds`;
+            document.getElementById('statAvailable').textContent = stats.availableBeds;
+            document.getElementById('statPending').textContent = stats.pendingComplaints;
+            document.getElementById('statResolvedSub').textContent = `${stats.resolvedComplaints} resolved`;
+            document.getElementById('statRate').textContent = `${stats.occupancyRate}%`;
+
+            // Render Recent Allocations
+            const allocTbody = document.getElementById('recentAllocationsTableBody');
+            if (!stats.recentAllocations || stats.recentAllocations.length === 0) {
+                allocTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 24px; color: var(--text-muted);">No room allocations recorded yet.</td></tr>`;
+            } else {
+                allocTbody.innerHTML = stats.recentAllocations.map(a => `
+                    <tr>
+                        <td>
+                            <div style="font-weight: 600; color: var(--text-heading);">${a.studentName || 'Student #' + a.studentId}</div>
+                            <div style="font-size: 0.76rem; color: var(--text-muted);">${a.studentRollNo || ''}</div>
+                        </td>
+                        <td>
+                            <span style="font-weight: 600;">Room ${a.roomNo || a.roomId}</span>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);">(${a.bedNo})</span>
+                        </td>
+                        <td style="font-size: 0.82rem; color: var(--text-muted);">${HMS.formatDate(a.allocationDate)}</td>
+                        <td>${HMS.getAllocationBadge(a.status)}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Render Recent Complaints
+            const compTbody = document.getElementById('recentComplaintsTableBody');
+            if (!stats.recentComplaints || stats.recentComplaints.length === 0) {
+                compTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 24px; color: var(--text-muted);">No complaints recorded yet.</td></tr>`;
+            } else {
+                compTbody.innerHTML = stats.recentComplaints.map(c => `
+                    <tr>
+                        <td>
+                            <div style="font-weight: 600; color: var(--text-heading);">${c.studentName || 'Student #' + c.studentId}</div>
+                            <div style="font-size: 0.76rem; color: var(--text-muted);">${c.roomNo ? 'Room ' + c.roomNo : c.studentRollNo}</div>
+                        </td>
+                        <td><span style="font-weight: 500; font-size: 0.8rem;">${c.category}</span></td>
+                        <td>
+                            <div style="font-size: 0.82rem; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${c.description}">
+                                ${c.description}
+                            </div>
+                        </td>
+                        <td>${HMS.getComplaintBadge(c.status)}</td>
+                    </tr>
+                `).join('');
+            }
+
+        } catch (err) {
+            HMS.toast('Failed to load dashboard data: ' + err.message, 'error');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await HMS.checkAuth(true);
+        loadDashboardData();
+    });
+</script>
+</body>
+</html>

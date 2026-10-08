@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Allocation - Hostel Management System</title>
+    <meta name="description" content="Assign students to available hostel rooms and manage bed occupancy">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+            <div>
+                <h2>Hostel Admin</h2>
+                <p>Management Portal</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-title">Navigation</div>
+            <a href="dashboard.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="students.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Students</span>
+            </a>
+            <a href="rooms.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3h18v18H3zM3 9h18M9 21V9"></path></svg>
+                <span>Rooms</span>
+            </a>
+            <a href="allocations.html" class="nav-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14l2 2 4-4"></path></svg>
+                <span>Room Allocation</span>
+            </a>
+            <a href="complaints.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span>Complaints</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-badge-footer">
+                <div class="admin-avatar js-admin-avatar">AD</div>
+                <div class="admin-info">
+                    <div class="admin-name js-admin-name">Hostel Warden</div>
+                    <div class="admin-role">Administrator</div>
+                </div>
+                <button class="btn-logout" title="Sign Out" onclick="HMS.logout()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN BODY -->
+    <main class="main-wrapper">
+        <header class="top-header">
+            <div class="header-left">
+                <button class="btn-menu-toggle" aria-label="Toggle menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="page-title-group">
+                    <h1>Room Allocation</h1>
+                    <p>Assign students to rooms, monitor bed distribution, and cancel allocations</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="openAllocateModal()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <line x1="19" y1="8" x2="19" y2="14"></line>
+                        <line x1="22" y1="11" x2="16" y2="11"></line>
+                    </svg>
+                    <span>Allocate Room / Bed</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="content-body">
+            <!-- Business Rules Notification Card -->
+            <div style="background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: var(--radius-lg); padding: 14px 18px; display: flex; align-items: flex-start; gap: 12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" style="flex-shrink:0; margin-top:2px;">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <div style="font-size: 0.83rem; color: #1e40af; line-height: 1.45;">
+                    <strong>Allocation Business Rules Enforced:</strong> Over-capacity allocations are automatically prevented. A student cannot hold multiple active allocations. Cancelling an allocation instantly restores bed availability.
+                </div>
+            </div>
+
+            <!-- Allocations Table Panel -->
+            <div class="content-panel">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <h3>Allocation History & Records (<span id="allocCount">0</span>)</h3>
+                        <p>Active and past bed assignments across all rooms</p>
+                    </div>
+
+                    <div class="panel-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="loadAllocations()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                            </svg>
+                            <span>Refresh</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Allocation ID</th>
+                                <th>Student</th>
+                                <th>Room & Block</th>
+                                <th>Bed Number</th>
+                                <th>Allocation Date</th>
+                                <th>Status</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allocationTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align:center; padding: 28px; color: var(--text-muted);">
+                                    Loading allocations...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- ALLOCATE ROOM MODAL -->
+<div id="allocationModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Allocate Student to Bed</h3>
+            <button class="btn-close-modal" onclick="HMS.closeModal('allocationModal')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <form id="allocationForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="allocStudentId">Select Student <span class="req">*</span></label>
+                    <select id="allocStudentId" class="form-control" required>
+                        <option value="">-- Choose Student --</option>
+                    </select>
+                    <span class="form-hint">Only students without an active room allocation should be chosen.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="allocRoomId">Select Target Room <span class="req">*</span></label>
+                    <select id="allocRoomId" class="form-control" required>
+                        <option value="">-- Choose Available Room --</option>
+                    </select>
+                    <span class="form-hint" id="roomCapacityHint">Displays live room capacity and available beds.</span>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="allocBedNo">Bed Number <span class="req">*</span></label>
+                        <select id="allocBedNo" class="form-control" required>
+                            <option value="Bed-1">Bed-1</option>
+                            <option value="Bed-2">Bed-2</option>
+                            <option value="Bed-3">Bed-3</option>
+                            <option value="Bed-4">Bed-4</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="allocDate">Allocation Date <span class="req">*</span></label>
+                        <input type="date" id="allocDate" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="HMS.closeModal('allocationModal')">Cancel</button>
+                <button type="submit" id="btnSubmitAlloc" class="btn btn-primary">Confirm Allocation</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/allocations.js"></script>
+</body>
+</html>

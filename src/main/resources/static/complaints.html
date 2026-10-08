@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Complaints Queue - Hostel Management System</title>
+    <meta name="description" content="Track, investigate, and resolve student maintenance complaints and service requests">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+            <div>
+                <h2>Hostel Admin</h2>
+                <p>Management Portal</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-title">Navigation</div>
+            <a href="dashboard.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="students.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Students</span>
+            </a>
+            <a href="rooms.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3h18v18H3zM3 9h18M9 21V9"></path></svg>
+                <span>Rooms</span>
+            </a>
+            <a href="allocations.html" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M9 14l2 2 4-4"></path></svg>
+                <span>Room Allocation</span>
+            </a>
+            <a href="complaints.html" class="nav-link active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span>Complaints</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="admin-badge-footer">
+                <div class="admin-avatar js-admin-avatar">AD</div>
+                <div class="admin-info">
+                    <div class="admin-name js-admin-name">Hostel Warden</div>
+                    <div class="admin-role">Administrator</div>
+                </div>
+                <button class="btn-logout" title="Sign Out" onclick="HMS.logout()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN BODY -->
+    <main class="main-wrapper">
+        <header class="top-header">
+            <div class="header-left">
+                <button class="btn-menu-toggle" aria-label="Toggle menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="page-title-group">
+                    <h1>Hostel Complaints & Services</h1>
+                    <p>Track maintenance tickets, assign service technicians, and log resolutions</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="openAddComplaintModal()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Record New Complaint</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="content-body">
+            <!-- Filter Bar Panel -->
+            <div class="content-panel">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <h3>Complaints Queue (<span id="complaintCount">0</span>)</h3>
+                        <p>Track service tickets by status and maintenance category</p>
+                    </div>
+
+                    <div class="panel-actions">
+                        <select id="filterComplaintStatus" class="filter-select">
+                            <option value="ALL">All Statuses</option>
+                            <option value="PENDING">Pending</option>
+                            <option value="IN_PROGRESS">In Progress</option>
+                            <option value="RESOLVED">Resolved</option>
+                        </select>
+
+                        <select id="filterComplaintCategory" class="filter-select">
+                            <option value="ALL">All Categories</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Plumbing">Plumbing</option>
+                            <option value="Internet">Internet</option>
+                            <option value="Cleanliness">Cleanliness</option>
+                            <option value="Furniture">Furniture</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Student & Room</th>
+                                <th>Category</th>
+                                <th>Description / Issue</th>
+                                <th>Report Date</th>
+                                <th>Status</th>
+                                <th>Resolution Notes</th>
+                                <th style="text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="complaintTableBody">
+                            <tr>
+                                <td colspan="8" style="text-align:center; padding: 28px; color: var(--text-muted);">
+                                    Loading complaints...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- RECORD COMPLAINT MODAL -->
+<div id="complaintModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Record New Maintenance Complaint</h3>
+            <button class="btn-close-modal" onclick="HMS.closeModal('complaintModal')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <form id="complaintForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="complaintStudentId">Student Resident <span class="req">*</span></label>
+                    <select id="complaintStudentId" class="form-control" required>
+                        <option value="">-- Choose Student --</option>
+                    </select>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="complaintCategory">Issue Category <span class="req">*</span></label>
+                        <select id="complaintCategory" class="form-control" required>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Plumbing">Plumbing</option>
+                            <option value="Internet">Internet / Wi-Fi</option>
+                            <option value="Cleanliness">Cleanliness / Housekeeping</option>
+                            <option value="Furniture">Furniture & Fixtures</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="complaintDate">Date Reported <span class="req">*</span></label>
+                        <input type="date" id="complaintDate" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="complaintDesc">Problem Description <span class="req">*</span></label>
+                    <textarea id="complaintDesc" class="form-control" rows="3" placeholder="Provide details regarding the maintenance issue..." required></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="HMS.closeModal('complaintModal')">Cancel</button>
+                <button type="submit" id="btnSubmitComplaint" class="btn btn-primary">File Complaint</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- UPDATE STATUS / RESOLVE MODAL -->
+<div id="resolveModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>Update Complaint Status</h3>
+            <button class="btn-close-modal" onclick="HMS.closeModal('resolveModal')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <form id="resolveForm">
+            <input type="hidden" id="resolveComplaintId">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="resolveStatus">Complaint Status <span class="req">*</span></label>
+                    <select id="resolveStatus" class="form-control" required>
+                        <option value="PENDING">PENDING</option>
+                        <option value="IN_PROGRESS">IN_PROGRESS</option>
+                        <option value="RESOLVED">RESOLVED</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="resolveRemarks">Resolution Remarks / Action Taken</label>
+                    <textarea id="resolveRemarks" class="form-control" rows="3" placeholder="e.g. Electrician replaced switchboard fuse on Oct 8th..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="HMS.closeModal('resolveModal')">Cancel</button>
+                <button type="submit" id="btnSubmitResolve" class="btn btn-primary">Update Status</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/complaints.js"></script>
+</body>
+</html>
